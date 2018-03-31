@@ -38,3 +38,42 @@ SOFTWARE.
   web pages, etc. using org-modes export functionalities.
 
   For availabe features, please refer to the function source-code.
+
+
+* SRC
+** ISSUES
+** WISH-lIST
+   - [ ] CAPTURE and refile as a subtree in this note
+     - [ ] Consider a more generic syntax for function-finding-location.
+
+** CAPTURE and refile as a subtree in this note
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates
+        '(
+          ("a" "Articles" entry
+           (file+olp buffer-file-name
+                     "STOCK" "CONTENTS" "ARTICLES") ;; Outline "STOCK/CONTENTS/ARTICLES" must exist
+           "* TODO %^{Title}
+        ,#+OPTIONS: toc:nil
+        ,#+begin_abstract
+        %^{Abstract}
+        Keywords: %^{Tags (comma separated)}
+        ,#+end_abstract
+        %\\2\n%?\n"
+           :prepend t :kill-buffer t)
+          ))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-capture-after-finalize-hook ()
+    (org-capture-goto-last-stored))
+
+  (add-hook 'org-capture-after-finalize-hook
+            'mon-org-capture-after-finalize-hook)
+#+END_SRC
+
+
+* STOCK
+** CONTENTS
+*** ARTICLES
+
+
