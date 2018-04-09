@@ -76,6 +76,11 @@ SOFTWARE.
            filename (file-name-as-directory base-directory))
         filename)))
 #+END_SRC
+*** Org-outline heading (get-function)
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-outline-get-heading ()
+    (nth 4 (org-heading-components)))
+#+END_SRC
 ** CAPTURE and refile as a subtree in this note
 *** Capture Templates
 #+BEGIN_SRC emacs-lisp
@@ -124,6 +129,18 @@ SOFTWARE.
       (widen)))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-title-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((title (mon-org-custom-property-get "TITLE")))
+        (unless title
+          (org-set-property "TITLE"
+                            (mon-org-outline-get-heading))))
+      (widen)))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
@@ -132,6 +149,9 @@ SOFTWARE.
 * STOCK
 ** GRAINS
 *** ARTICLES
+
+
+
 
 
 
