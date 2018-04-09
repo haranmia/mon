@@ -52,7 +52,7 @@ SOFTWARE.
         '(
           ("a" "Articles" entry
            (file+olp buffer-file-name
-                     "STOCK" "CONTENTS" "ARTICLES") ;; Outline "STOCK/CONTENTS/ARTICLES" must exist
+                     "STOCK" "GRAINS" "ARTICLES") ;; Outline "STOCK/GRAINS/ARTICLES" must exist
            "* TODO %^{Title}
         ,#+OPTIONS: toc:nil
         ,#+begin_abstract
@@ -73,7 +73,7 @@ SOFTWARE.
 
 
 * STOCK
-** CONTENTS
+** GRAINS
 *** ARTICLES
 
 
