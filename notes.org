@@ -108,7 +108,7 @@ SOFTWARE.
   (add-hook 'org-capture-after-finalize-hook
             'mon-org-capture-after-finalize-hook)
 #+END_SRC
-*** Export-file-name property
+*** Custom properties (export-file-name, titles, etc.)
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-property-get (&optional property-str)
     "Properties such as EXPORT_FILE_NAME etc. to be passed
@@ -116,6 +116,8 @@ SOFTWARE.
 
     (org-entry-get (point) property-str))
 #+END_SRC
+
+**** EXPORT_FILE_NAME
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-export-file-name-create ()
     (interactive)
@@ -130,6 +132,8 @@ SOFTWARE.
                             (mon-org-outline-to-org-filename))))
       (widen)))
 #+END_SRC
+
+**** TTILE
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-title-create ()
     (interactive)
@@ -151,13 +155,5 @@ SOFTWARE.
 * STOCK
 ** GRAINS
 *** ARTICLES
-
-
-
-
-
-
-
-
 
 
