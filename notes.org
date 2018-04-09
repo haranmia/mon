@@ -46,6 +46,17 @@ SOFTWARE.
    - [ ] CAPTURE and refile as a subtree in this note
      - [ ] Consider a more generic syntax for function-finding-location.
 
+** Generic elisp utilities
+*** Genpath
+#+BEGIN_SRC emacs-lisp
+  (defun mon-genpath (path-elem &optional absolute)
+    (let ((relative-path (mapconcat 'directory-file-name path-elem "/")))
+      (if absolute
+          (expand-file-name relative-path)
+        relative-path)))
+  ;; Example:
+  ;; (message (mon-genpath (list "a" "b" "c.txt")))
+#+END_SRC
 ** CAPTURE and refile as a subtree in this note
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
