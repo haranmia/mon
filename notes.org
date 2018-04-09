@@ -44,6 +44,8 @@ SOFTWARE.
 ** ISSUES
 ** WISH-lIST
    - [ ] CAPTURE and refile as a subtree in this note
+     - [ ] Deal with duplicate outline-headline in different captures.
+     - [ ] Sanitizers for title and export-file-name.
      - [ ] Consider a more generic syntax for function-finding-location.
 
 ** Generic elisp utilities
