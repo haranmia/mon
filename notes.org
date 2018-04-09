@@ -57,6 +57,7 @@ SOFTWARE.
   ;; Example:
   ;; (message (mon-genpath (list "a" "b" "c.txt")))
 #+END_SRC
+
 ** Generic org-mode utilities
 *** Org-outline to filename
 #+BEGIN_SRC emacs-lisp
@@ -76,6 +77,7 @@ SOFTWARE.
         filename)))
 #+END_SRC
 ** CAPTURE and refile as a subtree in this note
+*** Capture Templates
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
         '(
@@ -99,10 +101,41 @@ SOFTWARE.
   (add-hook 'org-capture-after-finalize-hook
             'mon-org-capture-after-finalize-hook)
 #+END_SRC
+*** Export-file-name property
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-property-get (&optional property-str)
+    "Properties such as EXPORT_FILE_NAME etc. to be passed
+  enclosed within double quotation."
 
+    (org-entry-get (point) property-str))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-export-file-name-create ()
+    (interactive)
 
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((export-file (mon-org-custom-property-get "EXPORT_FILE_NAME")))
+        (unless export-file
+          (org-set-property "EXPORT_FILE_NAME"
+                            (mon-org-outline-to-org-filename))))
+      (widen)))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
 * STOCK
 ** GRAINS
 *** ARTICLES
+
+
+
+
+
 
 
