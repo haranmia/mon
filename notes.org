@@ -92,12 +92,12 @@ SOFTWARE.
            (file+olp buffer-file-name
                      "STOCK" "GRAINS" "ARTICLES") ;; Outline "STOCK/GRAINS/ARTICLES" must exist
            "* TODO %^{Title}
-        ,#+OPTIONS: toc:nil
-        ,#+begin_abstract
-        %^{Abstract}
-        Keywords: %^{Tags (comma separated)}
-        ,#+end_abstract
-        %\\2\n%?\n"
+  ,#+OPTIONS: toc:nil
+  ,#+begin_abstract
+  %^{Abstract}
+  Keywords: %^{Tags (comma separated)}
+  ,#+end_abstract
+  %\\2\n%?\n"
            :prepend t :kill-buffer t)
           ))
 #+END_SRC
@@ -107,6 +107,16 @@ SOFTWARE.
 
   (add-hook 'org-capture-after-finalize-hook
             'mon-org-capture-after-finalize-hook)
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-capture-prepare-finalize-hook ()
+      (progn
+        (mon-org-custom-title-create)
+        (mon-org-custom-export-file-name-create)))
+
+  (add-hook 'org-capture-prepare-finalize-hook
+            'mon-org-capture-prepare-finalize-hook)
+
 #+END_SRC
 *** Custom properties (export-file-name, titles, etc.)
 #+BEGIN_SRC emacs-lisp
@@ -155,5 +165,3 @@ SOFTWARE.
 * STOCK
 ** GRAINS
 *** ARTICLES
-
-
