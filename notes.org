@@ -126,7 +126,6 @@ SOFTWARE.
 
     (org-entry-get (point) property-str))
 #+END_SRC
-
 **** EXPORT_FILE_NAME
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-export-file-name-create ()
@@ -162,7 +161,25 @@ SOFTWARE.
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
+**** TANGLE HEADER-ARGS (Cf. EXPORT_FILE_NAME)
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-bable-tangle-header-args-create (&optional extension)
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((export-file (mon-org-custom-property-get "header-args")))
+        (unless export-file
+          (org-set-property "header-args"
+                            (concat ":tangle "
+                                    (mon-org-outline-to-filename)
+                                    (or extension "")))))
+      (widen)))
+#+END_SRC
 ** Refile a subtree from this note
+*** Subtree contents for org-export
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-subtree-contents-refile-to-org (&optional base-directory)
     (interactive)
@@ -184,6 +201,18 @@ SOFTWARE.
 
         (write-region (org-get-entry) nil target-filename))
       (widen)))
+#+END_SRC
+*** Tangle babel source blocks
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-subtree-tangle-all-babel-blocks ()
+    "ASSERT `header-args :tangle <filename.extension>` given in subtree properties."
+    (interactive)
+
+    (save-excursion
+    (org-back-to-heading)
+    (org-narrow-to-subtree)
+    (org-babel-tangle)
+    (widen)))
 #+END_SRC
 * STOCK
 ** GRAINS
