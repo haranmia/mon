@@ -48,6 +48,12 @@ SOFTWARE.
      - [ ] Sanitizers for title and export-file-name.
      - [ ] Consider a more generic syntax for function-finding-location.
 
+  - [ ] Define preamble/postamble/header etc. for better look & feel (SOON)
+
+  - [ ] Define public set interfaces
+
+  - [ ] More generic syntax for function-finding-location in CAPTURE & Refile (SOMEDAY)
+
 ** Generic elisp utilities
 *** Genpath
 #+BEGIN_SRC emacs-lisp
@@ -214,6 +220,209 @@ SOFTWARE.
     (org-babel-tangle)
     (widen)))
 #+END_SRC
+** HTML Publishing
+*** Congfiguration database
+Put all configurations in the hash-table 'mon-configdb'
+#+BEGIN_SRC emacs-lisp
+  (setq mon-configdb (make-hash-table))
+#+END_SRC
+
+*** Core directory and path utilities
+**** File-dir and root-dir
+#+BEGIN_SRC emacs-lisp
+  (setf (gethash 'mon-file-dir mon-configdb)
+        (file-name-directory (or load-file-name buffer-file-name)))
+
+  (defun mon-file-dir ()
+    (gethash 'mon-file-dir mon-configdb))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setf (gethash 'mon-root-dir mon-configdb) "stock")
+
+  (defun mon-root-dir (&optional init-root-dir)
+    (or init-root-dir
+        (gethash 'mon-root-dir mon-configdb)))
+#+END_SRC
+**** Base directory
+#+BEGIN_SRC emacs-lisp
+  (setf (gethash 'mon-contents-dir mon-configdb)
+        (concat (file-name-as-directory (mon-root-dir))
+                (file-name-as-directory "grains"))) ;; default
+
+  (defun mon-contents-dir (&optional init-contents-dir use-as-origin)
+    ;; set
+    (and init-contents-dir
+         (if use-as-origin
+             ;; if
+             (setf (gethash 'mon-contents-dir mon-configdb)
+                   (file-name-as-directory init-contents-dir))
+           ;; else
+           (setf (gethash 'mon-contents-dir mon-configdb)
+                 (concat (file-name-as-directory (mon-root-dir))
+                         (file-name-as-directory init-contents-dir)))))
+    ;; get
+    (gethash 'mon-contents-dir mon-configdb))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-www-contents-directory (&optional dir prefix-path suffix-path absolute)
+    (let* ((this-dir
+            (file-name-as-directory
+             (concat (or (and prefix-path (file-name-as-directory prefix-path))
+                         (mon-contents-dir))
+                     dir)))
+
+           (suffix-to-this
+            (and suffix-path
+                 (if (file-name-extension suffix-path) suffix-path
+                   (file-name-as-directory suffix-path))))
+           ;;
+           (contents-relative-path (concat this-dir suffix-to-this)))
+
+
+        ;; Use concat to force relative path by default.
+        ;; For absolute==NON-NIL, use absolute path.
+        (if absolute
+            (expand-file-name contents-relative-path)
+          contents-relative-path)))
+#+END_SRC
+**** Publishing-dir
+#+BEGIN_SRC emacs-lisp
+  (setf (gethash 'mon-www-dir mon-configdb)
+        (file-name-as-directory "w3")) ;; default
+  (defun mon-www-dir (&optional init-www-dir use-as-origin)
+      ;; set
+      (and init-www-dir
+           (if use-as-origin
+               (setf (gethash 'mon-www-dir mon-configdb)
+                     (file-name-as-directory init-www-dir))))
+
+      ;; get
+      (gethash 'mon-www-dir mon-configdb))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-www-publish-directory (&optional dir prefix-path suffix-path absolute)
+    (let* ((this-dir
+            (file-name-as-directory
+             (concat (or (and prefix-path (file-name-as-directory prefix-path))
+                         (mon-www-dir))
+                     dir)))
+
+           (suffix-to-this
+            (and suffix-path
+                 (if (file-name-extension suffix-path) suffix-path
+                   (file-name-as-directory suffix-path))))
+           ;;
+           (contents-relative-path (concat this-dir suffix-to-this)))
+
+      ;; Use concat to force relative path by default.
+      ;; For absolute==NON-NIL, use absolute path.
+      (if absolute
+          (expand-file-name contents-relative-path)
+        contents-relative-path)))
+
+#+END_SRC
+
+*** Theme
+**** Name and deploy directory
+#+BEGIN_SRC emacs-lisp
+  (setf (gethash 'theme-name mon-configdb) '"proxy")
+
+  (defun mon-theme-name (&optional init-theme-name)
+    (or init-theme-name
+        (gethash 'theme-name mon-configdb)))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-theme-deploy-dir (&optional init-theme-name)
+    (format "chunk/themes/%s" (mon-theme-name init-theme-name)))
+#+END_SRC
+**** Base extension
+#+BEGIN_SRC emacs-lisp
+  (setf (gethash 'mon-attachments mon-configdb)
+        (regexp-opt '("css" "woff" "js" "html" "pdf"
+                      "gif" "ico" "jpg" "jpeg" "png" "svg")))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-base-extension (&optional init-theme)
+    (gethash 'mon-attachments mon-configdb))
+#+END_SRC
+**** Base directory
+#+BEGIN_SRC emacs-lisp
+  (defun mon-base-directory (&optional theme page prefix-dir suffix-dir absolute)
+    (let ((dir
+           (if theme
+               (mon-www-contents-directory (mon-theme-deploy-dir theme) (mon-root-dir)) ;; if
+             ;; else == mon-base-direcotry-no-theme
+             (mon-www-contents-directory page prefix-dir suffix-dir absolute))))
+
+    (downcase dir)))
+#+END_SRC
+**** Publishing directory
+#+BEGIN_SRC emacs-lisp
+  (defun mon-publishing-directory (&optional theme page prefix-dir suffix-dir absolute)
+    (let ((dir
+           (if theme
+               (mon-www-publish-directory (mon-theme-deploy-dir theme)) ;; if
+             ;; else == mon-www-publish-dir-no-theme
+             (mon-www-publish-directory page prefix-dir suffix-dir absolute))))
+
+    (downcase dir)))
+#+END_SRC
+
+*** Project-alist
+**** Utilities
+#+BEGIN_SRC emacs-lisp
+  (defun mon-publish-alist-name (&optional theme suffix delimiter)
+    (let ((sentinel
+           (if suffix (concat (or delimiter "-") suffix))))
+
+      (concat "mon" (or delimiter "-") (mon-theme-name theme)
+              sentinel)))
+#+END_SRC
+**** Project alist and components (declarations only)
+#+BEGIN_SRC emacs-lisp
+  (setq org-publish-project-alist ; (org-publish-project-alist)
+        (list))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-publish-project-alist
+               (list (mon-publish-alist-name) ;; project name generated as mon-<theme>
+                     :components (list
+                                  (mon-publish-alist-name nil "chunk") ;; default
+                                  (mon-publish-alist-name nil "-top") ;; default
+                                  )))
+#+END_SRC
+
+**** CHUNK
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-publish-project-alist
+               ;; Move chunk files, maybe move into
+               (list (mon-publish-alist-name nil "chunk") ;; default
+                     :base-directory (mon-base-directory (mon-theme-name))
+                     :exclued (regexp-opt (list (file-name-nondirectory (directory-file-name (mon-www-publish-directory)))))
+                     :base-extension (mon-base-extension)
+
+                     :publishing-directory (mon-publishing-directory (mon-theme-name))
+                     :publishing-function 'org-publish-attachment
+                     :recursive t
+                     ))
+#+END_SRC
+
+**** TOP
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-publish-project-alist
+               ;; Various misc files in the root
+               (list (mon-publish-alist-name nil "-top") ;; default
+                     :base-directory (mon-base-directory nil "about")
+                     :base-extension "org"
+
+                     :publishing-directory (mon-publishing-directory)
+                     :publishing-function '(org-html-publish-to-html)
+                     :recursive t
+
+                     :auto-sitemap nil
+                     ))
+#+END_SRC
+
 * STOCK
 ** GRAINS
 *** ARTICLES
@@ -266,3 +475,6 @@ h1 {
       font-size: 15px;
   }
 #+END_SRC
+
+
+
