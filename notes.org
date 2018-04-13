@@ -555,6 +555,126 @@ Put all configurations in the hash-table 'mon-configdb'
 * STOCK
 ** GRAINS
 *** ARTICLES
+**** TODO Cicero
+# NOTE: Licensing restrictions may not apply with the dummy texts illustrated for testing purpose in this section;
+#       they are all well known and publicly available.
+
+#+OPTIONS: toc:nil
+#+begin_abstract
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+
+Keywords: Cicero
+#+end_abstract
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+
+Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
+sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
+nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate
+velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+
+At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+Et harum quidem rerum facilis est et expedita distinctio.
+
+Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus
+id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates
+repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus,
+ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+
+Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
+sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
+Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
+nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate
+velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+
+At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+Et harum quidem rerum facilis est et expedita distinctio.
+
+Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus
+id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
+Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates
+repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus,
+ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+**** TODO Lorem Ipsum
+# NOTE: Licensing restrictions may not apply with the dummy texts illustrated for testing purpose in this section;
+#       they are all well known and publicly available.
+
+:PROPERTIES:
+:TITLE:    Lorem Ipsum
+:EXPORT_FILE_NAME: STOCK/GRAINS/ARTICLES/Lorem Ipsum.org
+:END:
+#+OPTIONS: toc:nil
+#+begin_abstract
+Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+"There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain..."
+
+Keywords: Lorem, Ipsum
+#+end_abstract
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam suscipit mattis nibh nec maximus.
+Quisque ac fringilla orci. Vivamus id nulla id leo rutrum consequat. Mauris a orci eros.
+Nulla interdum, tortor quis feugiat commodo, turpis sem consectetur ligula, sit amet placerat nunc metus nec leo.
+Quisque nulla nisl, pharetra eget imperdiet id, mollis at nunc. Curabitur scelerisque porta felis, vitae placerat risus.
+Donec justo augue, pretium ut tincidunt eu, egestas vel leo. Fusce non scelerisque magna.
+Vestibulum ultricies id erat vel lacinia. Sed at pretium quam. Cras eu lectus hendrerit, consequat mauris in, lobortis turpis.
+Morbi non massa a mauris elementum accumsan. Sed tempus id lectus ac auctor.
+
+Integer volutpat cursus augue venenatis iaculis. Donec blandit velit quis tristique pharetra.
+Suspendisse potenti. Praesent porttitor efficitur felis, non porttitor tortor efficitur ac.
+Nam vestibulum libero et mollis pulvinar. Nunc tempor ligula a fermentum blandit. Nam quis dolor purus.
+
+Donec facilisis, enim non auctor tempor, ligula erat aliquet arcu, bibendum molestie nulla odio sodales quam.
+Donec eget faucibus metus. Sed eget velit at quam convallis porttitor nec non purus.
+Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus pellentesque porttitor ligula eu sollicitudin.
+Duis lacus elit, placerat quis est sit amet, semper condimentum metus.
+Donec mattis, nibh in congue ultrices, est quam euismod lacus, vitae ullamcorper ante risus in lorem.
+Cras tincidunt sem id imperdiet posuere. Pellentesque sit amet eros sem.
+Aliquam erat volutpat. Nulla non eros euismod, vulputate metus in, pretium tellus.
+Integer vulputate maximus libero sit amet hendrerit.
+
+Aliquam eleifend lacus felis, eget tristique purus finibus sed.
+Pellentesque eget turpis quis tortor cursus consectetur sed vel turpis. Maecenas egestas laoreet finibus.
+Vestibulum odio ipsum, mollis et rhoncus scelerisque, mattis vel ante.
+Aliquam ut pellentesque enim. Sed bibendum luctus eros vel vehicula. Ut tempor tincidunt lectus a gravida.
+Vivamus auctor, urna sed consectetur vehicula, mi velit mollis ligula, ac volutpat enim est quis orci.
+Phasellus eget auctor libero, elementum lobortis magna. Nulla quis quam vel eros interdum efficitur non in nisl.
+Proin varius, mauris ac eleifend consequat, justo nibh molestie lacus, at pulvinar tortor nisi non purus.
+Curabitur mollis vel lorem ac vehicula. Maecenas sagittis lacinia risus, nec sollicitudin magna scelerisque vel.
+Donec a tristique nibh.
+
+Integer nunc sem, suscipit id dolor vitae, lobortis pellentesque diam. Pellentesque egestas nisi et diam dapibus lobortis.
+Donec vel dolor at nulla facilisis molestie. Morbi id erat in mauris molestie hendrerit.
+Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed nec lacinia dolor.
+Etiam finibus metus sit amet magna tristique, sit amet aliquet nibh interdum.
+Morbi euismod euismod urna, sed vestibulum metus malesuada vel. Nam mollis varius accumsan.
+Aliquam eu molestie libero. Suspendisse potenti. Aliquam pellentesque convallis erat ornare luctus.
+Duis a enim hendrerit eros ornare aliquet eu vel lectus. Aliquam erat volutpat.
+Curabitur efficitur accumsan dolor, sit amet sodales nisl molestie quis. Nam ut dolor vitae lectus tempus cursus.
 ** CHUNK
 *** THEMES
 **** PROXY
