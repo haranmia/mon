@@ -217,3 +217,52 @@ SOFTWARE.
 * STOCK
 ** GRAINS
 *** ARTICLES
+** CHUNK
+*** THEMES
+**** PROXY
+***** ASSETS
+****** CSS
+******* test1.css
+/* an example for (org-refile) testing... */
+h1 {
+    color: red;
+    font-size: 25px;
+}
+******* test2.css
+:PROPERTIES:
+:header-args: :tangle STOCK/CHUNK/THEMES/PROXY/ASSETS/CSS/test2.css
+:END:
+#+BEGIN_SRC css
+  /* an example for (org-refile) testing... */
+  h1 {
+      color: red;
+      font-size: 25px;
+  }
+#+END_SRC
+
+#+BEGIN_SRC css
+  /* an example for (org-refile) testing... */
+  h2 {
+      color: yellow;
+      font-size: 15px;
+  }
+#+END_SRC
+******* test3
+:PROPERTIES:
+:header-args: :tangle STOCK/CHUNK/THEMES/PROXY/ASSETS/CSS/test3
+:END:
+#+BEGIN_SRC css
+  /* an example for (org-refile) testing... */
+  h1 {
+      color: red;
+      font-size: 25px;
+  }
+#+END_SRC
+
+#+BEGIN_SRC css
+  /* an example for (org-refile) testing... */
+  h2 {
+      color: yellow;
+      font-size: 15px;
+  }
+#+END_SRC
