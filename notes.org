@@ -376,53 +376,47 @@ Put all configurations in the hash-table 'mon-configdb'
 
 **** Preamble
 #+BEGIN_SRC emacs-lisp
-  (defun mon-html-preamble (&optional init-page init-theme)
-
-    (mon-html-preamble-impl-proxy '((:pages . (((:name . "About")
-                                                (:link . "/"))
-                                               ((:name . "Articles")
-                                                (:link . "articles"))))))
+  (defun mon-html-preamble (&optional init-page init-theme page-title page-subtitle)
+    "TBD: Constructor for pagestruct /w theme-inheritance someday."
+    (mon-html-preamble-impl-proxy '((:pagestruct . (((:name . "About")
+                                                     (:link . "/"))
+                                                    ((:name . "Articles")
+                                                     (:link . "articles")))))
+                                  page-title
+                                  page-subtitle)
     )
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
-  (defun mon-html-preamble-impl-proxy (&optional pages-alist)
+  (defun mon-html-preamble-impl-proxy (&optional pagestruct-alist page-title page-subtitle)
 
-    (with-temp-buffer
-      (insert (format "<nav>\n"))
-
-
-      (let ((f-page (lambda (x)
-                      (insert (format "Name= %s\n"
-                                      (alist-get ':name  x)))))
-            (f-link (lambda (x)
-                      (insert (format "Link= %s\n"
-                                      (expand-file-name
-                                       (file-name-as-directory ((alist-get ':link  x)))
-                                       "/")))))
-            (f-progn-top (lambda(x)
-                           (progn
-                             (insert (format "  <a href=\"%s\">%s</a>\n"
-                                             (expand-file-name
-                                              (file-name-as-directory (alist-get ':link  x))
-                                              "/")
-                                             (alist-get ':name  x))))))
-            (f-progn (lambda(x)
-                       (progn
-                         (insert (format "  <a href=\"%s\">%s</a>\n"
-                                         (expand-file-name
-                                          (file-name-as-directory (alist-get ':link  x))
-                                          "/"
-                                          )
-                                         (alist-get ':name  x)))))))
+      (let* ((f-name (lambda (x) (alist-get ':name  x)))
+             (f-link (lambda (x) (alist-get ':link  x)))
+             (f-insert
+              (lambda (x)
+                (progn
+                  (insert (format "  <a href=\"%s\">%s</a>\n"
+                                  (expand-file-name (file-name-as-directory
+                                                     (funcall f-link x))
+                                                    "/")
+                                  (funcall f-name x)
+                                  ))))))
 
 
-        (funcall f-progn (car (alist-get ':pages pages-alist)))
-        (mapc '(lambda (y)
-                 (funcall f-progn y))
-              (cdr (alist-get ':pages pages-alist)))
-        )
-      (insert (format "</nav>\n"))
-      (buffer-string)))
+        (with-temp-buffer
+          (insert (format "<h1 class=\"title\">%s\n" (or page-title "%%PAGE::TITLE")))
+          (insert (format "  <p class=\"subtitle\"> %s </p>\n" (or page-subtitle "%%PAGE::SUBTITLE")))
+
+          (insert (format "</h1>\n"))
+          (insert (format "<nav>\n"))
+
+          (funcall f-insert (car (alist-get ':pagestruct pagestruct-alist)))
+           (mapc '(lambda (y)
+                    (funcall f-insert y))
+                 (cdr (alist-get ':pagestruct pagestruct-alist)))
+
+           (insert (format "</nav>\n"))
+           (buffer-string))))
+
 #+END_SRC
 
 *** Project-alist
@@ -481,7 +475,11 @@ Put all configurations in the hash-table 'mon-configdb'
                      :auto-sitemap nil
 
                      :html-postamble (mon-html-postamble)
-                     :html-preamble (mon-html-preamble) ;; args: page-structure
+                     :html-preamble (mon-html-preamble
+                                     "about"
+                                     "proxy"
+                                     "LowLand *Travellers*"
+                                     "Never stop exploring!") ;; args: page-structure
                      ))
 #+END_SRC
 
@@ -498,8 +496,13 @@ Put all configurations in the hash-table 'mon-configdb'
                      :auto-sitemap nil
 
                      :html-postamble (mon-html-postamble)
-                     :html-preamble (mon-html-preamble) ;; args: page-structure
+                     :html-preamble (mon-html-preamble
+                                     "articles"
+                                     "proxy"
+                                     "LowLand *Travellers*"
+                                     "Never stop exploring!") ;; args: page-structure
                      ))
+
 #+END_SRC
 
 * STOCK
@@ -554,6 +557,3 @@ h1 {
       font-size: 15px;
   }
 #+END_SRC
-
-
-
