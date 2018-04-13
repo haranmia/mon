@@ -167,10 +167,13 @@ SOFTWARE.
   (defun mon-org-subtree-contents-refile-to-org (&optional base-directory)
     (interactive)
     (mon-org-subtree-contents-refile ".org" base-directory))
+
+  (defun mon-org-subtree-contents-refile-bare (&optional base-directory)
+    (interactive)
+    (mon-org-subtree-contents-refile nil base-directory))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-subtree-contents-refile (&optional extension base-directory)
-    (interactive)
 
     (save-excursion
       (org-narrow-to-subtree)
