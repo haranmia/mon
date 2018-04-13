@@ -389,6 +389,8 @@ Put all configurations in the hash-table 'mon-configdb'
                      :components (list
                                   (mon-publish-alist-name nil "chunk") ;; default
                                   (mon-publish-alist-name nil "-top") ;; default
+                                  ;;-----
+                                  (mon-publish-alist-name nil "articles")
                                   )))
 #+END_SRC
 
@@ -417,6 +419,20 @@ Put all configurations in the hash-table 'mon-configdb'
 
                      :publishing-directory (mon-publishing-directory)
                      :publishing-function '(org-html-publish-to-html)
+                     :recursive t
+
+                     :auto-sitemap nil
+                     ))
+#+END_SRC
+
+**** ARTICLES
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-publish-project-alist
+               (list (mon-publish-alist-name nil "articles")
+                     :base-directory (mon-base-directory nil "articles")
+
+                     :publishing-directory (mon-publishing-directory nil "articles")
+                     :publishing-function 'org-html-publish-to-html
                      :recursive t
 
                      :auto-sitemap nil
