@@ -368,6 +368,12 @@ Put all configurations in the hash-table 'mon-configdb'
     (downcase dir)))
 #+END_SRC
 
+**** Postamble
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-postamble (&optional init-theme)
+    "<p>Last update: <span class=\"date\">%C</span></p>")
+#+END_SRC
+
 *** Project-alist
 **** Utilities
 #+BEGIN_SRC emacs-lisp
@@ -422,6 +428,8 @@ Put all configurations in the hash-table 'mon-configdb'
                      :recursive t
 
                      :auto-sitemap nil
+
+                     :html-postamble (mon-html-postamble)
                      ))
 #+END_SRC
 
@@ -436,6 +444,8 @@ Put all configurations in the hash-table 'mon-configdb'
                      :recursive t
 
                      :auto-sitemap nil
+
+                     :html-postamble (mon-html-postamble)
                      ))
 #+END_SRC
 
