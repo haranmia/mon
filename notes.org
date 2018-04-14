@@ -426,8 +426,11 @@ Put all configurations in the hash-table 'mon-configdb'
   Note: It is possible to override the global value by setting
   ,#+HTML_HEAD: attributes appropriately in individual .org files."
 
-    (mon-html-head-impl (list "style1.css"
-                              "style2.css")))
+    (mon-html-head-impl (list
+                         "orgstyle.css"
+                         ;; "style1.css"
+                         ;; "style2.css"
+                         )))
 
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
