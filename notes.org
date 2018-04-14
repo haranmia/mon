@@ -435,10 +435,6 @@ Put all configurations in the hash-table 'mon-configdb'
 
     (let ((f-local-css-path (lambda (x) (mon-genpath (list (mon-theme-deploy-dir) "assets" "css" x)))))
       (with-temp-buffer
-        (insert (format "%s\n" "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Open Sans\" />"))
-        (insert (format "%s\n" "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Fira Sans\" />"))
-        (insert (format "%s\n" "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Source Code Pro\" />"))
-
         (mapc '(lambda (y) (insert (format "<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\" />\n" (funcall f-local-css-path y))))
               local-css-list)
         (buffer-string))))
