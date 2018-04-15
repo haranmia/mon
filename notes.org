@@ -1,6 +1,6 @@
 * COMMENT File-local variables
 # -*- coding:utf-8 -*-
-#+TITLE: Settings for Maximizing Org-mode Note taking and publishing experience.
+#+TITLE: Maximize Note taking and publishing experience witn Org-Mode.
 #+AUTHOR: Haran Mia
 #+EMAIL: 37643674+haranmia@users.noreply.github.com
 #+DATE: %T
@@ -39,9 +39,14 @@ SOFTWARE.
 
   For availabe features, please refer to the function source-code.
 
-
-* SRC
+* Wish-list (or, Issues)
+:PROPERTIES:
+:VISIBILITY: all
+:END:
 ** ISSUES
+- [ ] Resolve conflicts with terminologies used for structuring/styles
+      such as title, subtite, or page etc.
+
 ** WISH-lIST
    - [ ] CAPTURE and refile as a subtree in this note
      - [ ] Deal with duplicate outline-headline in different captures.
@@ -49,11 +54,10 @@ SOFTWARE.
      - [ ] Consider a more generic syntax for function-finding-location.
 
   - [ ] Define preamble/postamble/header etc. for better look & feel (SOON)
-
   - [ ] Define public set interfaces
-
   - [ ] More generic syntax for function-finding-location in CAPTURE & Refile (SOMEDAY)
 
+* SRC
 ** Generic elisp utilities
 *** Genpath
 #+BEGIN_SRC emacs-lisp
