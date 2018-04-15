@@ -44,8 +44,6 @@ SOFTWARE.
 :VISIBILITY: all
 :END:
 ** ISSUES
-- [ ] Resolve conflicts with terminologies used for structuring/styles
-      such as title, subtite, or page etc.
 
 ** WISH-lIST
    - [ ] CAPTURE and refile as a subtree in this note
@@ -57,6 +55,23 @@ SOFTWARE.
   - [ ] Define public set interfaces
   - [ ] More generic syntax for function-finding-location in CAPTURE & Refile (SOMEDAY)
 
+** Resolutions and Design considerations
+:PROPERTIES:
+:VISIBILITY: folded
+:END:
+- [X] Resolve conflicts with terminologies used for structuring/styles
+      such as title, subtite, or page etc.
+
+  Considerations: Using title/subtitle to refer to headings in a single article is rather trivial.
+  Therefore group-wise/site-wise title/subtitle should be modified.
+  For now using a simple analogy from sailboat racing:
+
+  + a-ship (previously, pagestruct)
+    + name
+    + anchor (previously, link)
+    + mainsail (previously, title)
+    + headsail (previously, subtitle)
+    + pages/articles x N ( eath page will have their individual title/subtitle)
 * SRC
 ** Generic elisp utilities
 *** Genpath
@@ -476,21 +491,22 @@ Put all configurations in the hash-table 'mon-configdb'
 
 **** Preamble
 #+BEGIN_SRC emacs-lisp
-  (defun mon-html-preamble (&optional init-page init-theme page-title page-subtitle)
-    "TBD: Constructor for pagestruct /w theme-inheritance someday."
-    (mon-html-preamble-impl-proxy '((:pagestruct . (((:name . "About")
-                                                     (:link . "/"))
-                                                    ((:name . "Articles")
-                                                     (:link . "articles")))))
-                                  page-title
-                                  page-subtitle)
+  (defun mon-html-preamble (&optional init-page init-theme mainsail headsail)
+    "TBD: Constructor for ships /w theme-inheritance someday."
+    (mon-html-preamble-impl-proxy '((:ships . (((:name . "About")
+                                                (:anchor . "/"))
+                                               ((:name . "Articles")
+                                                (:anchor . "articles")))))
+                                  mainsail ;; main-headline
+                                  headsail) ;; sub-headline
     )
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
-  (defun mon-html-preamble-impl-proxy (&optional pagestruct-alist page-title page-subtitle)
+  (defun mon-html-preamble-impl-proxy (&optional ships-alist mainsail headsail)
+    "Note: mainsail/headsail are placeholders for main/sub-headline."
 
       (let* ((f-name (lambda (x) (alist-get ':name  x)))
-             (f-link (lambda (x) (alist-get ':link  x)))
+             (f-link (lambda (x) (alist-get ':anchor  x)))
              (f-insert
               (lambda (x)
                 (progn
@@ -503,18 +519,18 @@ Put all configurations in the hash-table 'mon-configdb'
 
 
         (with-temp-buffer
-          (insert (format "<h1 class=\"title\">%s\n" (or page-title "%%PAGE::TITLE")))
-          (insert (format "  <p class=\"subtitle\"> %s </p>\n" (or page-subtitle "%%PAGE::SUBTITLE")))
+          (insert (format "<h1 class=\"mainsail\">%s\n" (or mainsail "%%MAIN-HEADLINE")))
+          (insert (format "  <p class=\"headsail\"> %s </p>\n" (or headsail "%%SUB-HEADLINE")))
 
           (insert (format "</h1>\n"))
-          (insert (format "<nav>\n"))
+          (insert (format "<compass>\n"))
 
-          (funcall f-insert (car (alist-get ':pagestruct pagestruct-alist)))
+          (funcall f-insert (car (alist-get ':ships ships-alist)))
            (mapc '(lambda (y)
                     (funcall f-insert y))
-                 (cdr (alist-get ':pagestruct pagestruct-alist)))
+                 (cdr (alist-get ':ships ships-alist)))
 
-           (insert (format "</nav>\n"))
+           (insert (format "</compass>\n"))
            (buffer-string))))
 
 #+END_SRC
@@ -617,8 +633,8 @@ Put all configurations in the hash-table 'mon-configdb'
                        :html-preamble (mon-html-preamble
                                        "about"
                                        "proxy"
-                                       "LowLand *Travellers*"
-                                       "Never stop exploring!") ;; args: page-structure
+                                       "LowLand *Travellers*"   ;; mainsail/headline @ args: ship-structure
+                                       "Never stop exploring!") ;; headsail/headline @ args: ship-structure
 
                        :html-head-include-default-style nil ;; Disable default css style
                        :html-head-include-scripts nil ;; Disable default javascript
@@ -642,8 +658,8 @@ Put all configurations in the hash-table 'mon-configdb'
                      :html-preamble (mon-html-preamble
                                      "articles"
                                      "proxy"
-                                     "LowLand *Travellers*"
-                                     "Never stop exploring!") ;; args: page-structure
+                                     "HighLand *Travellers*" ;; mainsail/headline @ args: ship-structure
+                                     "Also keep exploring!") ;; headsail/headline @ args: ship-structure
 
                      :html-head-include-default-style nil ;; Disable default css style
                      :html-head-include-scripts nil ;; Disable default javascript
