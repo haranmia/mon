@@ -1,6 +1,6 @@
 * COMMENT File-local variables
 # -*- coding:utf-8 -*-
-#+TITLE: Maximize Note taking and publishing experience witn Org-Mode.
+#+TITLE: Maximize Note taking/publishing experience with Org-Mode.
 #+AUTHOR: Haran Mia
 #+EMAIL: 37643674+haranmia@users.noreply.github.com
 #+DATE: %T
