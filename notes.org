@@ -209,7 +209,7 @@ SOFTWARE.
   ,#+KEYWORDS: %s
   ,#+STARTUP: %s\n\n\n"
             (or title "Untitled")
-            subtitle
+            (or subtitle "")
             (or author "Anonymous")
             email
             (or fixed-date-time (format-time-string "%c" (current-time))) ;; if not previously created, current-time should be good
