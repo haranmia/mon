@@ -208,6 +208,46 @@ SOFTWARE.
         (write-region (org-get-entry) nil target-filename))
       (widen)))
 #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-subtree-contents-refile-to-org-no-props (&optional base-directory)
+    (interactive)
+    (mon-org-subtree-contents-refile-no-props ".org" base-directory))
+
+  (defun mon-org-subtree-contents-refile-bare-no-props (&optional base-directory)
+    (interactive)
+    (mon-org-subtree-contents-refile-no-props nil base-directory))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-subtree-contents-refile-no-props (&optional extension base-directory)
+
+    (save-excursion
+      (org-narrow-to-subtree)
+      (org-back-to-heading)
+
+      (let ((org-yank-adjusted-subtrees t)
+            (target-filename
+             (or (mon-org-custom-property-get "EXPORT_FILE_NAME")
+                 (mon-org-outline-to-filename extension base-directory)))
+            )
+
+        ;;(write-region (org-get-entry) nil target-filename)
+        (org-copy-subtree)
+        (with-current-buffer (get-buffer-create (concat "*-temp-buffer-SOME-RANDOM-ID-HERE-*"))
+          (org-mode)
+          (org-yank)
+          (org-back-to-heading)
+
+          (if (re-search-forward ":PROPERTIES:" (point-max) t)
+              (let ((beg (match-beginning 0))
+                    (end (re-search-forward ":END:")))
+
+                (write-region (+ end 1) (point-max) target-filename))
+
+            (write-region (point-at-bol 2) (point-max) target-filename))
+          (kill-buffer)))
+      (widen)))
+#+END_SRC
+
 *** Tangle babel source blocks
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-subtree-tangle-all-babel-blocks ()
@@ -620,13 +660,14 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
 **** TODO Lorem Ipsum
-# NOTE: Licensing restrictions may not apply with the dummy texts illustrated for testing purpose in this section;
-#       they are all well known and publicly available.
-
 :PROPERTIES:
 :TITLE:    Lorem Ipsum
 :EXPORT_FILE_NAME: STOCK/GRAINS/ARTICLES/Lorem Ipsum.org
 :END:
+
+# NOTE: Licensing restrictions may not apply with the dummy texts illustrated for testing purpose in this section;
+#       they are all well known and publicly available.
+
 #+OPTIONS: toc:nil
 #+begin_abstract
 Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
