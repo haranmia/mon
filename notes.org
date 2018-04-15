@@ -209,12 +209,12 @@ SOFTWARE.
   ,#+KEYWORDS: %s
   ,#+STARTUP: %s\n\n\n"
             (or title "Untitled")
-            (or subtitle "")
+            subtitle
             (or author "Anonymous")
             email
-            (or fixed-date-time (format-time-string "%c" (current-time)))
+            (or fixed-date-time (format-time-string "%c" (current-time))) ;; if not previously created, current-time should be good
             keyword-tags
-            startup-option))
+            (or startup-option "indent")))
 #+END_SRC
 *** Subtree contents for org-export
 #+BEGIN_SRC emacs-lisp
@@ -259,6 +259,14 @@ SOFTWARE.
             (target-filename
              (or (mon-org-custom-property-get "EXPORT_FILE_NAME")
                  (mon-org-outline-to-filename extension base-directory)))
+            (this-title (mon-org-custom-property-get "TITLE"))
+            (this-subtitle (mon-org-custom-property-get "SUBTITLE"))
+            (this-author (mon-org-custom-property-get "AUTHOR"))
+            (this-email (mon-org-custom-property-get "EMAIL"))
+            (this-create-timestamp (mon-org-custom-property-get "CREATE_TIMESTAMP"))
+            (this-update-timestamp (mon-org-custom-property-get "UPDATE_TIMESTAMP")) ;; (last update provided via postamble) ponder if keeping that information in property drawer will be of use
+            (this-keywords (mon-org-custom-property-get "KEYWORDS")) ;; need to take-out from buffer
+            (this-indent (mon-org-custom-property-get "INDENT"))
             )
 
         ;;(write-region (org-get-entry) nil target-filename)
@@ -268,13 +276,13 @@ SOFTWARE.
 
 
           (insert (mon-org-insert-file-headers
-                   "Test-Title" ;; title
-                   "Test-subtitle" ;; subtitle
-                   "Anonymous-author" ;; author
-                   "No-email" ;; email
-                   nil ;; fixed-date-time
-                   "keys" ;; keyword-tags
-                   "indent" ;;startup-option
+                   this-title ;; title
+                   this-subtitle ;; subtitle
+                   this-author ;; author
+                   this-email ;; email
+                   this-create-timestamp ;; fixed-date-time
+                   this-keywords ;; keyword-tags
+                   this-indent ;;startup-option
                    ))
           (save-excursion
             (goto-char (point-min))
