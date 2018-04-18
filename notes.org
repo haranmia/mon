@@ -142,6 +142,7 @@ SOFTWARE.
         (mon-org-custom-title-create)
         (mon-org-custom-subtitle-create)
         (mon-org-custom-author-create)
+        (mon-org-custom-email-create)
         (mon-org-custom-export-file-name-create)))
 
   (add-hook 'org-capture-prepare-finalize-hook
@@ -215,7 +216,19 @@ SOFTWARE.
           (org-set-property "AUTHOR" ""))) ;; now, just a placeholder
       (widen)))
 #+END_SRC
+**** EMAIL
 #+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-email-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((title (mon-org-custom-property-get "EMAIL")))
+        (unless title
+          (org-set-property "EMAIL" ""))) ;; now, just a placeholder
+      (widen)))
 #+END_SRC
 **** TANGLE HEADER-ARGS (Cf. EXPORT_FILE_NAME)
 #+BEGIN_SRC emacs-lisp
