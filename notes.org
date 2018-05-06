@@ -81,6 +81,14 @@ SOFTWARE.
            filename (file-name-as-directory base-directory))
         filename)))
 #+END_SRC
+*** Org-outline heading (get-function)
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-outline-get-heading ()
+    (org-get-heading "no-tags" "no-todo" "no-priority" "no-comment"))
+  ;; Although calling (org-heading-components) and then retrieving
+  ;; the 4th-element necessarily does the same thing,
+  ;; org-get-heading is more intuitive, provides better abstraction.
+#+END_SRC
 ** CAPTURE and refile as a subtree in this note
 *** Capture Templates
 #+BEGIN_SRC emacs-lisp
@@ -132,6 +140,20 @@ SOFTWARE.
                             (mon-org-outline-to-org-filename))))
       (widen)))
 #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-title-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((title (mon-org-custom-property-get "TITLE")))
+        (unless title
+          (org-set-property "TITLE"
+                            (mon-org-outline-get-heading))))
+      (widen)))
+ #+END_SRC
 * STOCK
 ** GRAINS
 *** ARTICLES
