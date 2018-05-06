@@ -41,3 +41,45 @@ SOFTWARE.
 
 ** TODO Prologue
 
+* Wish-list (features/issues)
+:PROPERTIES:
+:VISIBILITY: all
+:END:
+** ISSUES
+** WISH-LIST
+   - [ ] CAPTURE and refile as a subtree in this note
+     - [ ] Consider a more generic syntax for function-finding-location.
+
+* SRC
+** CAPTURE and refile as a subtree in this note
+#+BEGIN_SRC emacs-lisp
+  (setq org-capture-templates
+	'(
+	  ("a" "Articles" entry
+	   (file+olp buffer-file-name
+		     "STOCK" "GRAINS" "ARTICLES") ;; Outline "STOCK/GRAINS/ARTICLES" must exist
+	   "* TODO %^{Title}
+    ,#+OPTIONS: toc:nil
+    ,#+begin_abstract
+    %^{Abstract}
+    Keywords: %^{Keywords (comma separated)}
+    ,#+end_abstract
+    %\\2\n%?\n"
+	   :prepend t :kill-buffer t)
+	  ))
+;; To capture using the above template, use C-c c a
+;; then interactively input Title and other entries
+;; finally C-c C-c to finish.
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-capture-after-finalize-hook ()
+    (org-capture-goto-last-stored))
+
+  (add-hook 'org-capture-after-finalize-hook
+            'mon-org-capture-after-finalize-hook)
+#+END_SRC
+
+
+* STOCK
+** GRAINS
+*** ARTICLES
