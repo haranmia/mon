@@ -119,6 +119,16 @@ SOFTWARE.
   (add-hook 'org-capture-after-finalize-hook
             'mon-org-capture-after-finalize-hook)
 #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-capture-prepare-finalize-hook ()
+      (progn
+        (mon-org-custom-title-create)
+        (mon-org-custom-export-file-name-create)))
+
+  (add-hook 'org-capture-prepare-finalize-hook
+            'mon-org-capture-prepare-finalize-hook)
+
+#+END_SRC
 
 *** Custom properties (export-file-name, titles, etc.)
 #+BEGIN_SRC emacs-lisp
