@@ -48,6 +48,8 @@ SOFTWARE.
 ** ISSUES
 ** WISH-LIST
    - [ ] CAPTURE and refile as a subtree in this note
+     - [ ] Deal with duplicate outline-headline in different captures.
+     - [ ] Sanitizers for title and export-file-name.
      - [ ] Consider a more generic syntax for function-finding-location.
 
 * SRC
@@ -118,7 +120,7 @@ SOFTWARE.
             'mon-org-capture-after-finalize-hook)
 #+END_SRC
 
-*** Export-file-name property
+*** Custom properties (export-file-name, titles, etc.)
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-property-get (&optional property-str)
     "Properties such as EXPORT_FILE_NAME etc. to be passed
@@ -126,6 +128,7 @@ SOFTWARE.
 
     (org-entry-get (point) property-str))
 #+END_SRC
+**** EXPORT_FILE_NAME
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-export-file-name-create ()
     (interactive)
@@ -140,6 +143,8 @@ SOFTWARE.
                             (mon-org-outline-to-org-filename))))
       (widen)))
 #+END_SRC
+
+**** TTILE
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-custom-title-create ()
     (interactive)
