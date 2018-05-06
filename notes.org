@@ -169,6 +169,21 @@ SOFTWARE.
                             (mon-org-outline-get-heading))))
       (widen)))
  #+END_SRC
+** Refile a subtree from this note
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-subtree-contents-refile-to-org (&optional base-directory)
+    (interactive)
+
+    (org-narrow-to-subtree)
+    (org-back-to-heading)
+    (let ((target-filename
+           (or (mon-org-custom-property-get "EXPORT_FILE_NAME")
+               (mon-org-outline-to-org-filename base-directory))))
+
+      (write-region (org-get-entry) nil target-filename))
+    (widen))
+#+END_SRC
+
 * STOCK
 ** GRAINS
 *** ARTICLES
