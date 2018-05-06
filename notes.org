@@ -82,24 +82,25 @@ SOFTWARE.
         filename)))
 #+END_SRC
 ** CAPTURE and refile as a subtree in this note
+*** Capture Templates
 #+BEGIN_SRC emacs-lisp
   (setq org-capture-templates
-	'(
-	  ("a" "Articles" entry
-	   (file+olp buffer-file-name
-		     "STOCK" "GRAINS" "ARTICLES") ;; Outline "STOCK/GRAINS/ARTICLES" must exist
-	   "* TODO %^{Title}
-    ,#+OPTIONS: toc:nil
-    ,#+begin_abstract
-    %^{Abstract}
-    Keywords: %^{Keywords (comma separated)}
-    ,#+end_abstract
-    %\\2\n%?\n"
-	   :prepend t :kill-buffer t)
-	  ))
-;; To capture using the above template, use C-c c a
-;; then interactively input Title and other entries
-;; finally C-c C-c to finish.
+        '(
+          ("a" "Articles" entry
+           (file+olp buffer-file-name
+                     "STOCK" "GRAINS" "ARTICLES") ;; Outline "STOCK/GRAINS/ARTICLES" must exist
+           "* TODO %^{Title}
+  ,#+OPTIONS: toc:nil
+  ,#+begin_abstract
+  %^{Abstract}
+  Keywords: %^{Keywords (comma separated)}
+  ,#+end_abstract
+  %\\2\n%?\n"
+           :prepend t :kill-buffer t)
+          ))
+  ;; To capture using the above template, use C-c c a
+  ;; then interactively input Title and other entries
+  ;; finally C-c C-c to finish.
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-capture-after-finalize-hook ()
@@ -109,7 +110,28 @@ SOFTWARE.
             'mon-org-capture-after-finalize-hook)
 #+END_SRC
 
+*** Export-file-name property
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-property-get (&optional property-str)
+    "Properties such as EXPORT_FILE_NAME etc. to be passed
+  enclosed within double quotation."
 
+    (org-entry-get (point) property-str))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-export-file-name-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((export-file-name (mon-org-custom-property-get "EXPORT_FILE_NAME")))
+        (unless export-file-name
+          (org-set-property "EXPORT_FILE_NAME"
+                            (mon-org-outline-to-org-filename))))
+      (widen)))
+#+END_SRC
 * STOCK
 ** GRAINS
 *** ARTICLES
