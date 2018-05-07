@@ -420,6 +420,46 @@ Put all configurations in the hash-table 'mon-configdb'
            (buffer-string))))
 #+END_SRC
 
+**** Head
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-head (&optional local-css-list)
+    "TODO: Provide both local theme and URI based (google-api, boosstrap etc.) css.
+  Note: It is possible to override the global value by setting
+  ,#+HTML_HEAD: attributes appropriately in individual .org files."
+
+    (mon-html-head-impl (list "style1.css"
+                              "style2.css")))
+
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-head-impl (&optional local-css-list)
+
+    (let ((f-local-css-path (lambda (x) (mon-genpath (list (mon-theme-deploy-dir) "assets" "css" x)))))
+      (with-temp-buffer
+        (insert (format "%s\n" "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Open Sans\" />"))
+        (insert (format "%s\n" "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Fira Sans\" />"))
+        (insert (format "%s\n" "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://fonts.googleapis.com/css?family=Source Code Pro\" />"))
+
+        (mapc '(lambda (y) (insert (format "<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\" />\n" (funcall f-local-css-path y))))
+              local-css-list)
+        (buffer-string))))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-head-extra (&optional local-css-list)
+    "Note: It is possible to override the global value by setting
+  ,#+HTML_HEAD_EXTRA: attributes appropriately in individual .org files."
+
+    (mon-html-head-extra-impl local-css-list))
+
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-head-extra-impl (&optional local-css-list)
+    (let ((f-local-css-path (lambda (x) (mon-genpath (list (mon-theme-deploy-dir) "assets" "css" x)))))
+      (with-temp-buffer
+        (mapc '(lambda (y) (insert (format "<link rel=\"stylesheet\" type=\"text/css\" href=\"/%s\" />\n" (funcall f-local-css-path y))))
+              local-css-list)
+        (buffer-string))))
+#+END_SRC
 *** Project-alist
 **** Utilities
 #+BEGIN_SRC emacs-lisp
@@ -481,6 +521,10 @@ Put all configurations in the hash-table 'mon-configdb'
                                      "proxy"
                                      "LowLand *Travellers*"
                                      "Never stop exploring!") ;; args: page-structure
+
+                     :html-head-include-default-style nil ;; Disable default css style
+                     :html-head-include-scripts nil ;; Disable default javascript
+                     :html-head (mon-html-head)
                      ))
 #+END_SRC
 **** ARTICLES
@@ -501,6 +545,10 @@ Put all configurations in the hash-table 'mon-configdb'
                                      "proxy"
                                      "LowLand *Travellers*"
                                      "Never stop exploring!") ;; args: page-structure
+
+                     :html-head-include-default-style nil ;; Disable default css style
+                     :html-head-include-scripts nil ;; Disable default javascript
+                     :html-head (mon-html-head)
                      ))
 #+END_SRC
 * STOCK
