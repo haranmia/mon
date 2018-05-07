@@ -144,12 +144,14 @@ SOFTWARE.
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-capture-prepare-finalize-hook ()
       (progn
+        (mon-org-custom-export-file-name-create)
         (mon-org-custom-title-create)
         (mon-org-custom-subtitle-create)
         (mon-org-custom-author-create)
         (mon-org-custom-email-create)
         (mon-org-custom-create-timestamp-create)
-        (mon-org-custom-export-file-name-create)))
+        (mon-org-custom-startup-options-create)
+        ))
 
   (add-hook 'org-capture-prepare-finalize-hook
             'mon-org-capture-prepare-finalize-hook)
@@ -269,6 +271,20 @@ SOFTWARE.
           (org-set-property "CREATE_TIMESTAMP" (format-time-string "%c" (current-time)))))
       (widen)))
 #+END_SRC
+**** STARTUP OPTIONS
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-startup-options-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((title (mon-org-custom-property-get "STARTUP")))
+        (unless title
+          (org-set-property "STARTUP" ""))) ;; now, just a placeholder
+      (widen)))
+#+END_SRC
 ** Refile a subtree from this note
 *** File-local variables
 #+BEGIN_SRC emacs-lisp
@@ -353,7 +369,7 @@ SOFTWARE.
             (this-create-timestamp (mon-org-custom-property-get "CREATE_TIMESTAMP"))
             (this-update-timestamp (mon-org-custom-property-get "UPDATE_TIMESTAMP")) ;; (last update provided via postamble) ponder if keeping that information in property drawer will be of use
             (this-keywords (mon-org-custom-property-get "KEYWORDS")) ;; need to take-out from buffer
-            (this-indent (mon-org-custom-property-get "INDENT"))
+            (this-startup (mon-org-custom-property-get "STARTUP"))
             )
 
         ;;(write-region (org-get-entry) nil target-filename)
@@ -369,7 +385,7 @@ SOFTWARE.
                    this-email ;; email
                    this-create-timestamp ;; fixed-date-time
                    this-keywords ;; keyword-tags
-                   this-indent ;;startup-option
+                   this-startup ;;startup-option
                    ))
           (save-excursion
             (goto-char (point-min))
