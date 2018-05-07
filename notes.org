@@ -148,6 +148,7 @@ SOFTWARE.
         (mon-org-custom-subtitle-create)
         (mon-org-custom-author-create)
         (mon-org-custom-email-create)
+        (mon-org-custom-create-timestamp-create)
         (mon-org-custom-export-file-name-create)))
 
   (add-hook 'org-capture-prepare-finalize-hook
@@ -252,6 +253,20 @@ SOFTWARE.
       (let ((title (mon-org-custom-property-get "EMAIL")))
         (unless title
           (org-set-property "EMAIL" ""))) ;; now, just a placeholder
+      (widen)))
+#+END_SRC
+**** Created date and time a.k.a. CREATE_TIMESTAMP
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-create-timestamp-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((title (mon-org-custom-property-get "CREATE_TIMESTAMP")))
+        (unless title
+          (org-set-property "CREATE_TIMESTAMP" (format-time-string "%c" (current-time)))))
       (widen)))
 #+END_SRC
 ** Refile a subtree from this note
