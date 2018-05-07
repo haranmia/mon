@@ -377,6 +377,57 @@ Put all configurations in the hash-table 'mon-configdb'
   (defun mon-html-postamble (&optional init-theme)
     "<p>Last update: <span class=\"date\">%C</span></p>")
 #+END_SRC
+**** Preamble
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-preamble (&optional init-page init-theme)
+
+    (mon-html-preamble-impl-proxy '((:pages . (((:name . "About")
+                                                (:link . "/"))
+                                               ((:name . "Articles")
+                                                (:link . "articles"))))))
+    )
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-html-preamble-impl-proxy (&optional pages-alist)
+
+    (with-temp-buffer
+      (insert (format "<nav>\n"))
+
+
+      (let ((f-page (lambda (x)
+                      (insert (format "Name= %s\n"
+                                      (alist-get ':name  x)))))
+            (f-link (lambda (x)
+                      (insert (format "Link= %s\n"
+                                      (expand-file-name
+                                       (file-name-as-directory ((alist-get ':link  x)))
+                                       "/")))))
+            (f-progn-top (lambda(x)
+                           (progn
+                             (insert (format "  <a href=\"%s\">%s</a>\n"
+                                             (expand-file-name
+                                              (file-name-as-directory (alist-get ':link  x))
+                                              "/")
+                                             (alist-get ':name  x))))))
+            (f-progn (lambda(x)
+                       (progn
+                         (insert (format "  <a href=\"%s\">%s</a>\n"
+                                         (expand-file-name
+                                          (file-name-as-directory (alist-get ':link  x))
+                                          "/"
+                                          )
+                                         (alist-get ':name  x)))))))
+
+
+        (funcall f-progn (car (alist-get ':pages pages-alist)))
+        (mapc '(lambda (y)
+                 (funcall f-progn y))
+              (cdr (alist-get ':pages pages-alist)))
+        )
+      (insert (format "</nav>\n"))
+      (buffer-string)))
+#+END_SRC
+
 *** Project-alist
 **** Utilities
 #+BEGIN_SRC emacs-lisp
@@ -433,6 +484,7 @@ Put all configurations in the hash-table 'mon-configdb'
                      :auto-sitemap nil
 
                      :html-postamble (mon-html-postamble)
+                     :html-preamble (mon-html-preamble) ;; args: page-structure
                      ))
 #+END_SRC
 **** ARTICLES
@@ -448,6 +500,7 @@ Put all configurations in the hash-table 'mon-configdb'
                      :auto-sitemap nil
 
                      :html-postamble (mon-html-postamble)
+                     :html-preamble (mon-html-preamble) ;; args: page-structure
                      ))
 #+END_SRC
 * STOCK
