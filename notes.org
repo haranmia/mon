@@ -187,6 +187,37 @@ SOFTWARE.
       (widen)))
  #+END_SRC
 ** Refile a subtree from this note
+*** File-local variables
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-insert-file-headers
+      (&optional
+       title
+       subtitle
+       author
+       email
+       fixed-date-time
+       keyword-tags
+       startup-option)
+
+    (interactive)
+
+    (format "* COMMENT File-local variables
+  # -*- coding:utf-8 -*-
+  ,#+TITLE: %s
+  ,#+SUBTITLE: %s
+  ,#+AUTHOR: %s
+  ,#+EMAIL: %s
+  ,#+DATE: %s
+  ,#+KEYWORDS: %s
+  ,#+STARTUP: %s\n\n\n"
+            (or title "Untitled")
+            (or subtitle "")
+            (or author "Anonymous")
+            email
+            (or fixed-date-time (format-time-string "%c" (current-time)))
+            keyword-tags
+            startup-option))
+#+END_SRC
 *** Subtree contents for org-export
 #+BEGIN_SRC emacs-lisp
   (defun mon-org-subtree-contents-refile-to-org (&optional base-directory)
@@ -238,16 +269,32 @@ SOFTWARE.
         (org-copy-subtree)
         (with-current-buffer (get-buffer-create (concat "*-temp-buffer-SOME-RANDOM-ID-HERE-*"))
           (org-mode)
+
+
+          (insert (mon-org-insert-file-headers
+                   "Test-Title" ;; title
+                   "Test-subtitle" ;; subtitle
+                   "Anonymous-author" ;; author
+                   "No-email" ;; email
+                   nil ;; fixed-date-time
+                   "keys" ;; keyword-tags
+                   "indent" ;;startup-option
+                   ))
+          (save-excursion
+            (goto-char (point-min))
+            (write-region (point-at-bol 2) (point-max) target-filename)) ;; removes the "* COMMENT File-local variables" outline
+
           (org-yank)
           (org-back-to-heading)
 
           (if (re-search-forward ":PROPERTIES:" (point-max) t)
               (let ((beg (match-beginning 0))
                     (end (re-search-forward ":END:")))
+                (write-region (+ end 1) (point-max) target-filename t)) ;; write-region with append=t
 
-                (write-region (+ end 1) (point-max) target-filename))
+            (write-region (point-at-bol 2) (point-max) target-filename t))
 
-            (write-region (point-at-bol 2) (point-max) target-filename))
+
           (kill-buffer)))
       (widen)))
 #+END_SRC
