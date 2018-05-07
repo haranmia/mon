@@ -46,6 +46,9 @@ SOFTWARE.
 :VISIBILITY: all
 :END:
 ** ISSUES
+- [ ] Write a sample article including figures, equations and codes
+- [ ] Save figures in a folder, consider file-name rules
+- [ ] Start a real experimental Github-pages site
 
 ** WISH-LIST
    - [ ] CAPTURE and refile as a subtree in this note
@@ -142,6 +145,7 @@ SOFTWARE.
   (defun mon-org-capture-prepare-finalize-hook ()
       (progn
         (mon-org-custom-title-create)
+        (mon-org-custom-subtitle-create)
         (mon-org-custom-export-file-name-create)))
 
   (add-hook 'org-capture-prepare-finalize-hook
@@ -205,6 +209,21 @@ SOFTWARE.
                             (mon-org-outline-get-heading))))
       (widen)))
  #+END_SRC
+**** SUBTITLE
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-custom-subtitle-create ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((title (mon-org-custom-property-get "SUBTITLE")))
+        (unless title
+          (org-set-property "SUBTITLE" ""))) ;; now, just a placeholder
+      (widen)))
+#+END_SRC
+
 ** Refile a subtree from this note
 *** File-local variables
 #+BEGIN_SRC emacs-lisp
