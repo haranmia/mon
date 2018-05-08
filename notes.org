@@ -2942,6 +2942,51 @@ Put all configurations in the hash-table 'mon-configdb'
       margin:1em auto
   }
 
+
+  /* -- */
+  .mainsail {
+      margin:.8em auto;
+      color:#A53539/*#000*/
+  }
+
+  .headsail,.mainsail {
+      text-align:center
+  }
+
+  .headsail {
+      font-size:1.1em;
+      line-height:1.4;
+      font-weight:700;
+      margin:1em auto;
+      color:#B9543C
+  }
+
+
+  compass a {
+      background: none;
+  }
+
+  compass {
+      font-family: $monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0;
+      margin: 0;
+      hyphens: none;
+  }
+
+  compass {
+      margin-top: 1em;
+      font-size: 1rem;
+  }
+
+  compass > a {
+      margin: 0 1ex;
+      color:#FF8C00;
+  }
+  /* -- */
+
+
   .abstract {
       margin:auto;
       width:80%;
