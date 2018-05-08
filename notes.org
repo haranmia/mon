@@ -56,6 +56,12 @@ SOFTWARE.
      - [ ] Sanitizers for title and export-file-name.
      - [ ] Consider a more generic syntax for function-finding-location.
 
+   - [ ] Minify CSS
+     - [ ] INVESTIGSTE: Whitespace removal
+     - [ ] Tangle blocks in separate css files, remove comments, add license
+     - [ ] Unify multiple css in a single file (or include all in HTML)
+     - [ ] Automate by hooks
+
 ** Resolutions and/or Design considerations
 :PROPERTIES:
 :VISIBILITY: folded
@@ -86,7 +92,55 @@ SOFTWARE.
   ;; Example:
   ;; (message (mon-genpath (list "a" "b" "c.txt")))
 #+END_SRC
+*** Minify CSS
+#+BEGIN_SRC emacs-lisp
+  (defun mon-css-minify-file (&optional css-src-file css-dest-file)
+    (interactive)
 
+    (let* ((src-file (or css-src-file "/tmp/orgstyle-test.css"))
+           (dest-file (or css-dest-file src-file)))
+
+        (with-temp-buffer
+          (insert-file-contents src-file)
+          (mon-css-remove-comments)
+          (mon-css-remove-whitespaces)
+
+          (write-region (buffer-substring-no-properties (point-min) (point-max)) nil dest-file))))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-css-remove-comments()
+    (interactive)
+
+    (goto-char (point-min))
+    (let ((kill-ring-at-start kill-ring) ;; save kill-ring
+          (comment-start "/*")
+          (comment-end "*/")
+          (comment-start-skip "/\\*+[ \t]*")
+          (comment-end-skip "[ \t]*\\*+/"))
+
+      (comment-kill (count-lines (point-min) (point-max)))
+      (setq kill-ring kill-ring-at-start))) ;; restore kill-ring
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-css-remove-whitespaces ()
+    (interactive)
+
+    (goto-char (point-min))
+    ;;(replace-regexp "[ \t\r\n]+" ""))
+    (replace-regexp "[\t\n]+" ""))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-css-add-license (&optional css-file-path comments)
+    (interactive)
+    (message "THIS FUNCTIONALITY IS NOT AVAILABLE YET")
+    )
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-css-unify-files (&optional css-files-list)
+    (interactive)
+    (message "THIS FUNCTIONALITY IS NOT AVAILABLE YET")
+    )
+#+END_SRC
 ** Generic org-mode utilities
 *** Org-outline to filename
 #+BEGIN_SRC emacs-lisp
