@@ -46,6 +46,11 @@ SOFTWARE.
 :VISIBILITY: all
 :END:
 ** ISSUES
+- [ ] Modify hyperlinks (internal-files starting from root-dir)
+      during subtree-contents-refiling-to-org to relative-references
+      depending on article's outline-level
+      *see if there is a better way of acheiving this*
+
 - [ ] Write a sample article including figures, equations and codes
 - [ ] Save figures in a folder, consider file-name rules
 - [ ] Start a real experimental Github-pages site
@@ -448,6 +453,20 @@ SOFTWARE.
           (org-yank)
           (org-back-to-heading)
 
+          (if org-descriptive-links
+              (org-toggle-link-display))
+          (replace-regexp "^\\[\\[file:stock/grains/media/"
+                          (concat "[[file:" (replace-regexp-in-string ;; for now replace all of the suffix-string in hyperlink
+                                             "[ aA-zZ]+/"
+                                             "../"
+                                             (file-relative-name
+                                              (file-name-directory target-filename) ;; such as "stock/grains/articles/a.org"
+                                              "stock/grains"))
+                                  "media/"))
+
+          (goto-char (point-min)) ;; heading may be different now, use point-min
+
+
           (if (re-search-forward ":PROPERTIES:" (point-max) t)
               (let ((beg (match-beginning 0))
                     (end (re-search-forward ":END:")))
@@ -730,6 +749,7 @@ Put all configurations in the hash-table 'mon-configdb'
                (list (mon-publish-alist-name) ;; project name generated as mon-<theme>
                      :components (list
                                   (mon-publish-alist-name nil "chunk") ;; default
+                                  (mon-publish-alist-name nil "media") ;; default
                                   (mon-publish-alist-name nil "-top") ;; default
                                   ;;-----
                                   (mon-publish-alist-name nil "articles")
@@ -746,6 +766,21 @@ Put all configurations in the hash-table 'mon-configdb'
                      :base-extension (mon-base-extension)
 
                      :publishing-directory (mon-publishing-directory (mon-theme-name))
+                     :publishing-function 'org-publish-attachment
+                     :recursive t
+                     ))
+#+END_SRC
+
+**** MEDIA
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-publish-project-alist
+               ;; Move media files, maybe move into
+               (list (mon-publish-alist-name nil "media") ;; default
+                     :base-directory (mon-base-directory) ;; (mon-base-directory nil "media")
+                     :exclued (regexp-opt (list (file-name-nondirectory (directory-file-name (mon-www-publish-directory)))))
+                     :base-extension (mon-base-extension)
+
+                     :publishing-directory (mon-publishing-directory)
                      :publishing-function 'org-publish-attachment
                      :recursive t
                      ))
