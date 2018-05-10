@@ -481,18 +481,21 @@ SOFTWARE.
           (org-yank)
           (org-back-to-heading)
 
-          (if org-descriptive-links
-              (org-toggle-link-display))
-          (replace-regexp "^\\[\\[file:stock/grains/media/"
-                          (concat "[[file:" (replace-regexp-in-string ;; for now replace all of the suffix-string in hyperlink
-                                             "[ aA-zZ]+/"
-                                             "../"
-                                             (file-relative-name
-                                              (file-name-directory target-filename) ;; such as "stock/grains/articles/a.org"
-                                              "stock/grains"))
-                                  "media/"))
 
-          (goto-char (point-min)) ;; heading may be different now, use point-min
+          (save-excursion
+            (if org-descriptive-links
+                (org-toggle-link-display))
+            (replace-regexp "^\\[\\[file:stock/grains/media/"
+                            (concat "[[file:" (replace-regexp-in-string ;; for now replace all of the suffix-string in hyperlink
+                                               "[ aA-zZ]+/"
+                                               "../"
+                                               (file-relative-name
+                                                (file-name-directory target-filename) ;; such as "stock/grains/articles/a.org"
+                                                "stock/grains"))
+                                    "media/"))
+
+            )
+          ;;(goto-char (point-min)) ;; heading may be different now, use point-min--> try save-excursion instead
 
 
           (if (re-search-forward ":PROPERTIES:" (point-max) t)
