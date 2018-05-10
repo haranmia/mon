@@ -850,7 +850,6 @@ Put all configurations in the hash-table 'mon-configdb'
                      :publishing-function 'org-html-publish-to-html
                      :recursive t
 
-                     :auto-sitemap nil
 
                      :html-postamble (mon-html-postamble)
                      :html-preamble (mon-html-preamble
@@ -862,6 +861,11 @@ Put all configurations in the hash-table 'mon-configdb'
                      :html-head-include-default-style nil ;; Disable default css style
                      :html-head-include-scripts nil ;; Disable default javascript
                      :html-head (mon-html-head)
+
+
+                     :auto-sitemap t
+                     :sitemap-filename "index.org"
+                     :sitemap-sort-files 'anti-chronologically
                      ))
 #+END_SRC
 * STOCK
