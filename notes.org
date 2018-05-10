@@ -520,6 +520,83 @@ SOFTWARE.
       (org-babel-tangle)
       (widen)))
 #+END_SRC
+** Parse contents
+*** TODO Parse abstract section
+#+BEGIN_SRC emacs-lisp
+  (defun mon-parse-abstract-section ()
+    (interactive)
+
+    (save-excursion
+      (org-back-to-heading)
+      (org-narrow-to-subtree)
+
+      (let ((org-yank-adjusted-subtrees t)
+            ;;(target-filename
+            ;; (or (mon-org-custom-property-get "EXPORT_FILE_NAME")
+            ;;     (mon-org-outline-to-filename extension base-directory)))
+            )
+
+        ;;(write-region (org-get-entry) nil target-filename)
+        (org-copy-subtree)
+        (with-current-buffer (get-buffer-create (concat "*-temp-buffer-SOME-RANDOM-ID-HERE-*"))
+          (org-mode)
+          (org-yank)
+          (org-back-to-heading)
+
+          (let* ((section-boundary (mon-abstract-section-boundary-positions))
+                 (keywords-region-boundary (mon-keywords-region-boundary-positions))
+                 (keywords-values (buffer-substring
+                                      (nth 3 keywords-region-boundary)
+                                      (nth 4 keywords-region-boundary))))
+
+            ;; To remove keywords region:
+            ;;(delete-region (nth 1 keywords-region-boundary)
+            ;;               (nth 4 keywords-region-boundary))
+            ;;(mon-remove-keywords-region (nth 1 keywords-region-boundary)
+            ;;                            (nth 4 keywords-region-boundary))
+
+            (message (format "%s" keywords-values))
+            keywords-values)
+
+          (kill-buffer)
+          ))
+
+      (widen)))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-remove-keywords-region (&optional beg end)
+    (delete-region beg end))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-abstract-section-boundary-positions ()
+    (goto-char (point-min)) ;; Required
+    ;;(message (format "%s" (buffer-substring (point-min) (+ (point-min) 200))))
+
+    (let ((beg (+ 1 (re-search-forward "#\\+begin_abstract$")))
+          (end (progn (re-search-forward "#\\+end_abstract$")
+                      (match-beginning 0))))
+      (cons beg end)))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-keywords-region-boundary-positions (&optional start finish include-key)
+    "Ponder: narrow-to-region subject to input arguments, then simplify let in caller.
+  include-key is a flag (not) to include the mathed string 'Keyworrds ::' as well.
+  "
+    (goto-char (point-min)) ;; Required
+
+    (let ((beg (+ 0 (re-search-forward "[ \t\n]*Keywords[ ]*[:]*[ ]*")))
+          (regexp-pat-beg (match-beginning 0))
+          (regexp-pat-end (match-end 0))
+          (end (progn (re-search-forward "[,.]*$")
+                      (match-beginning 0))))
+
+      (list (point-min) ;; nth= 0
+            regexp-pat-beg ;; nth= 1
+            regexp-pat-end ;; nth= 2
+            beg ;; nth= 3
+            end ;; nth= 4
+            )))
+#+END_SRC
 ** HTML Publishing
 *** Congfiguration database
 Put all configurations in the hash-table 'mon-configdb'
