@@ -455,7 +455,9 @@ SOFTWARE.
             (this-email (mon-org-custom-property-get "EMAIL"))
             (this-create-timestamp (mon-org-custom-property-get "CREATE_TIMESTAMP"))
             (this-update-timestamp (mon-org-custom-property-get "UPDATE_TIMESTAMP")) ;; (last update provided via postamble) ponder if keeping that information in property drawer will be of use
-            (this-keywords (mon-org-custom-property-get "KEYWORDS")) ;; need to take-out from buffer
+            (this-keywords (concat (mon-org-custom-property-get "KEYWORDS")
+                                   (mon-parse-abstract-section)
+                                   )) ;; need to take-out from buffer
             (this-startup (mon-org-custom-property-get "STARTUP"))
             )
 
