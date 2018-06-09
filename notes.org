@@ -850,6 +850,48 @@ Put all configurations in the hash-table 'mon-configdb'
               local-css-list)
         (buffer-string))))
 #+END_SRC
+
+*** Sitemaps
+**** ARTICLES
+#+BEGIN_SRC emacs-lisp
+    (defun mon-sitemap-function-article (title list)
+      (mapconcat
+       'identity
+       (list
+        (concat "#+TITLE: " title)
+        (org-list-to-subtree list '(:istart "** "))
+        "
+       ,#+OPTIONS: title:nil num:nil
+       ,#+HTML_HEAD_EXTRA: <link rel=\"stylesheet\" type=\"text/css\" href=\"/chunk/themes/proxy/assets/css/style-article-index.css\"/>")
+       "\n\n"))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-format-entry-article (entry style project)
+    (when (not (directory-name-p entry))
+      (concat
+       (format "
+      [[file:%s][%s]]
+      ,#+begin_article-summary
+      ,#+begin_date
+      %s
+      ,#+end_date
+      ,#+begin_tags
+      %s
+      ,#+end_tags
+      ,#+end_article-summary
+
+      ,#+INCLUDE: \"%s::abstract\"
+
+      [[file:%s][Read more]]
+      "
+               entry
+               (org-publish-find-title entry project)
+               (format-time-string "%B %e, %Y" (org-publish-find-date entry project))
+               (org-publish-find-property entry :keywords project 'html)
+               entry
+               entry))))
+
+#+END_SRC
 *** Project-alist
 **** Utilities
 #+BEGIN_SRC emacs-lisp
@@ -958,7 +1000,12 @@ Put all configurations in the hash-table 'mon-configdb'
 
                      :auto-sitemap t
                      :sitemap-filename "index.org"
+                     :sitemap-function 'mon-sitemap-function-article
                      :sitemap-sort-files 'anti-chronologically
+                     :sitemap-format-entry 'mon-format-entry-article
+                     ;;
+                     :sitemap-style 'list
+                     :with-tags nil
                      ))
 #+END_SRC
 * STOCK
