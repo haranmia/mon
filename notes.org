@@ -172,6 +172,23 @@ SOFTWARE.
   ;; the 4th-element necessarily does the same thing,
   ;; org-get-heading is more intuitive, provides better abstraction.
 #+END_SRC
+*** Random strings/filenames using ORG ID
+#+BEGIN_SRC emacs-lisp
+  (defun mon-org-random-string-create (&optional insert-at-point return-string)
+    (interactive)
+    (let ((random-string (org-id-new))) ;; (org-id-new prefix)
+      ;;(with-temp-buffer
+      ;;  (insert (format "%s" random-string))
+      ;;  (clipboard-kill-region (point-min) (point-max))
+      ;;  )
+      (kill-new random-string) ;; kill-new @ simple.el
+
+      (if insert-at-point
+          (insert (format "%s" random-string)))
+
+      (if return-string random-string)))
+#+END_SRC
+
 ** CAPTURE and refile as a subtree in this note
 *** Capture Templates
 #+BEGIN_SRC emacs-lisp
