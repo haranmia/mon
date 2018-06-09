@@ -861,7 +861,7 @@ Put all configurations in the hash-table 'mon-configdb'
         (concat "#+TITLE: " title)
         (org-list-to-subtree list '(:istart "** "))
         "
-       ,#+OPTIONS: title:nil num:nil
+       ,#+OPTIONS: title:nil num:nil toc:nil
        ,#+HTML_HEAD_EXTRA: <link rel=\"stylesheet\" type=\"text/css\" href=\"/chunk/themes/proxy/assets/css/style-article-index.css\"/>")
        "\n\n"))
 #+END_SRC
