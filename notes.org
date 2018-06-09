@@ -543,7 +543,7 @@ SOFTWARE.
       (widen)))
 #+END_SRC
 ** Parse contents
-*** TODO Parse abstract section
+*** TODO Parse abstract section [(Cf. Backend) Remove keywords-region from abstract section)]
 #+BEGIN_SRC emacs-lisp
   (defun mon-parse-abstract-section (&optional delete-keywords)
 
@@ -891,6 +891,24 @@ Put all configurations in the hash-table 'mon-configdb'
                entry
                entry))))
 
+#+END_SRC
+*** Backend
+**** Remove keywords-region from abstract section
+#+BEGIN_SRC emacs-lisp
+  (defun mon-proxy-articles-index-special-block-filter (block-data backend info)
+
+    (cond ((eq backend 'html)
+           (let ((file (buffer-file-name (current-buffer))))
+             (if (and file
+                    (string-match-p "index.org" file))
+
+                 (let* ((regexp-pat "[ \t\n]*\<p>[ \t\n]Keywords: .*[ \t\n]\</p>[ \t\n]")
+                        (text (replace-regexp-in-string regexp-pat "" block-data)))
+                   (replace-regexp-in-string regexp-pat "" text)))))))
+
+  (eval-after-load 'ox '(add-to-list
+                         'org-export-filter-special-block-functions
+                         'mon-proxy-articles-index-special-block-filter))
 #+END_SRC
 *** Project-alist
 **** Utilities
