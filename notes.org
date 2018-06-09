@@ -866,7 +866,7 @@ Put all configurations in the hash-table 'mon-configdb'
        "\n\n"))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
-  (defun mon-format-entry-article (entry style project)
+  (defun mon-format-entry-article-div (entry style project)
     (when (not (directory-name-p entry))
       (concat
        (format "
@@ -892,7 +892,56 @@ Put all configurations in the hash-table 'mon-configdb'
                entry))))
 
 #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (defun mon-format-entry-article (entry style project)
+    (when (not (directory-name-p entry))
+
+      (concat
+       (format "
+      [[file:%s][%s]]
+      ,#+begin_article-summary
+      <span class=\"date\"> %s </span> by <span class=\"author\"> [[%s][%s]] </span>
+      <span class=\"tags\"> %s </span>
+
+      ,#+INCLUDE: \"%s::abstract\" :only-contents t
+      [[file:%s][Read more]]
+      <hr />
+      ,#+end_article-summary
+      "
+               entry
+               (org-publish-find-title entry project)
+               (format-time-string "%B %e, %Y" (org-publish-find-date entry project))
+               (plist-get (nth 1 (car (org-publish-find-property entry :author project)))
+                          :raw-link)
+               (nth 2 (car (org-publish-find-property entry :author project)))
+               (org-publish-find-property entry :keywords project 'html)
+               entry
+               entry))))
+ #+END_SRC
+
 *** Backend
+**** Tag sanitizers
+#+BEGIN_SRC emacs-lisp
+  (defun mon-sanitize-html-tag-hr(string backend info)
+    (let* ((regexp-pat "&lt;hr /&gt;")
+           (replace-pat "<hr />"))
+      (replace-regexp-in-string regexp-pat replace-pat string)))
+
+
+  (defun mon-sanitize-html-tag-span-end(string backend info)
+    (let* ((regexp-pat "&lt;/span&gt;") ;; (concat prefix-pat "&lt;/span&gt;" suffix-pat))
+           (replace-pat "</span>"))
+      (replace-regexp-in-string regexp-pat replace-pat string)))
+
+
+  (defun mon-sanitize-html-tag-span-beg(string backend info &optional class-name prefix-pat suffix-pat)
+    (let* ((class-str (and class-name
+                           (concat " class=\"" class-name "\"")))
+           (regexp-pat (concat prefix-pat "&lt;span" class-str "&gt;" suffix-pat))
+           (replace-pat (concat "<span" class-str ">")))
+      (replace-regexp-in-string regexp-pat replace-pat string)))
+#+END_SRC
+
 **** Remove keywords-region from abstract section
 #+BEGIN_SRC emacs-lisp
   (defun mon-proxy-articles-index-special-block-filter (block-data backend info)
@@ -902,9 +951,26 @@ Put all configurations in the hash-table 'mon-configdb'
              (if (and file
                     (string-match-p "index.org" file))
 
-                 (let* ((regexp-pat "[ \t\n]*\<p>[ \t\n]Keywords: .*[ \t\n]\</p>[ \t\n]")
-                        (text (replace-regexp-in-string regexp-pat "" block-data)))
-                   (replace-regexp-in-string regexp-pat "" text)))))))
+                 (let* ((block-data1 (mon-sanitize-html-tag-hr block-data backend info))
+                        ;;
+                        (regexp-pat1 "[ \t\n]*\<p>[ \t\n]Keywords: .*[ \t\n]*\\(.*\\)[ \t\n]\\(<hr />\\)[ \t\n]</p>")
+                        (replace-pat1 "\\1\\2")
+                        (block-data2 (replace-regexp-in-string regexp-pat1 replace-pat1 block-data1))
+                        ;;
+                        (block-data3 (mon-sanitize-html-tag-span-end block-data2 backend info))
+                        (block-data4 (mon-sanitize-html-tag-span-beg block-data3 backend info "author"))
+                        (block-data5 (mon-sanitize-html-tag-span-beg block-data4 backend info "date"))
+                        (block-data6 (mon-sanitize-html-tag-span-beg block-data5 backend info "tags"))
+                        ;;
+                        (regexp-pat2 "</p>\\([ \t\n]*\\)<p>")
+                        (replace-pat2"</p>\\1<p style=\"display:inline\">")
+                        (block-data7 (replace-regexp-in-string regexp-pat2 replace-pat2 block-data6))
+                        ;;
+
+                        )
+                   (setq block-data block-data7)))))))
+
+
 
   (eval-after-load 'ox '(add-to-list
                          'org-export-filter-special-block-functions
