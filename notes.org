@@ -901,7 +901,9 @@ Put all configurations in the hash-table 'mon-configdb'
       [[file:%s][%s]]
       ,#+begin_article-summary
       <span class=\"date\"> %s </span> by <span class=\"author\"> [[%s][%s]] </span>
-      <span class=\"tags\"> %s </span>
+      #+begin_tags
+      %s
+      #+end_tags
 
       ,#+INCLUDE: \"%s::abstract\" :only-contents t
       [[file:%s][Read more]]
@@ -960,15 +962,14 @@ Put all configurations in the hash-table 'mon-configdb'
                         (block-data3 (mon-sanitize-html-tag-span-end block-data2 backend info))
                         (block-data4 (mon-sanitize-html-tag-span-beg block-data3 backend info "author"))
                         (block-data5 (mon-sanitize-html-tag-span-beg block-data4 backend info "date"))
-                        (block-data6 (mon-sanitize-html-tag-span-beg block-data5 backend info "tags"))
                         ;;
-                        (regexp-pat2 "</p>\\([ \t\n]*\\)<p>")
-                        (replace-pat2"</p>\\1<p style=\"display:inline\">")
-                        (block-data7 (replace-regexp-in-string regexp-pat2 replace-pat2 block-data6))
+                        ;;(regexp-pat2 "</div>\\([ \t\n]*\\)<p>")
+                        ;;(replace-pat2"</div>\\1<p style=\"display:inline\">")
+                        ;;(block-data6 (replace-regexp-in-string regexp-pat2 replace-pat2 block-data5))
                         ;;
 
                         )
-                   (setq block-data block-data7)))))))
+                   (setq block-data block-data5)))))))
 
 
 
