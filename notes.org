@@ -904,9 +904,7 @@ Put all configurations in the hash-table 'mon-configdb'
       #+begin_tags
       %s
       #+end_tags
-
       ,#+INCLUDE: \"%s::abstract\"
-
       [[file:%s][Read more]]
       <hr />
       ,#+end_article-summary
@@ -963,13 +961,15 @@ Put all configurations in the hash-table 'mon-configdb'
                         (block-data5 (replace-regexp-in-string
                                       "[ \t\n]*\<p>[ \t\n]Keywords: .*[ \t\n]*</p>[ \t\n]*" "" block-data4))
                         ;;
+                        (block-data6 (replace-regexp-in-string
+                                    "</p></div>[ \t\n]*<p>[ \t\n]*\\(.*\\)[ \t\n]*\\(<hr />\\)[ \t\n]*</p>"
+				  "\\1\\2\n</p>\n</div>" block-data5))
                         ;;(regexp-pat2 "</div>\\([ \t\n]*\\)<p>")
                         ;;(replace-pat2"</div>\\1<p style=\"display:inline\">")
                         ;;(block-data6 (replace-regexp-in-string regexp-pat2 replace-pat2 block-data5))
                         ;;
-
                         )
-                   (setq block-data block-data5)))))))
+                   (setq block-data block-data6)))))))
 
 
 
