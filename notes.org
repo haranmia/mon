@@ -905,7 +905,8 @@ Put all configurations in the hash-table 'mon-configdb'
       %s
       #+end_tags
 
-      ,#+INCLUDE: \"%s::abstract\" :only-contents t
+      ,#+INCLUDE: \"%s::abstract\"
+
       [[file:%s][Read more]]
       <hr />
       ,#+end_article-summary
@@ -955,13 +956,12 @@ Put all configurations in the hash-table 'mon-configdb'
 
                  (let* ((block-data1 (mon-sanitize-html-tag-hr block-data backend info))
                         ;;
-                        (regexp-pat1 "[ \t\n]*\<p>[ \t\n]Keywords: .*[ \t\n]*\\(.*\\)[ \t\n]\\(<hr />\\)[ \t\n]</p>")
-                        (replace-pat1 "\\1\\2")
-                        (block-data2 (replace-regexp-in-string regexp-pat1 replace-pat1 block-data1))
+                        (block-data2 (mon-sanitize-html-tag-span-end block-data1 backend info))
+                        (block-data3 (mon-sanitize-html-tag-span-beg block-data2 backend info "author"))
+                        (block-data4 (mon-sanitize-html-tag-span-beg block-data3 backend info "date"))
                         ;;
-                        (block-data3 (mon-sanitize-html-tag-span-end block-data2 backend info))
-                        (block-data4 (mon-sanitize-html-tag-span-beg block-data3 backend info "author"))
-                        (block-data5 (mon-sanitize-html-tag-span-beg block-data4 backend info "date"))
+                        (block-data5 (replace-regexp-in-string
+                                      "[ \t\n]*\<p>[ \t\n]Keywords: .*[ \t\n]*</p>[ \t\n]*" "" block-data4))
                         ;;
                         ;;(regexp-pat2 "</div>\\([ \t\n]*\\)<p>")
                         ;;(replace-pat2"</div>\\1<p style=\"display:inline\">")
