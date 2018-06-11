@@ -6809,10 +6809,19 @@ textarea {
   }
 
   body .abstract {
-      margin: auto;
-      width: 90%;
-      font-style: italic;
-      border-bottom: 3px double #8b8b8b;
+    margin: auto;
+    width: 90%;
+    font-style: italic;
+    border-bottom: 2px solid #8b8b8b;
+    /*border-bottom: 3px double #8b8b8b;*/
+  }
+
+  body .abstract p:last-of-type {
+    margin-bottom:.5em;
+  }
+  body .abstract p:last-of-type:before {
+      content:"";
+      white-space:pre
   }
 
   /* -- */
