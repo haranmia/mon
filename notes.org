@@ -6758,6 +6758,15 @@ textarea {
 #+BEGIN_SRC css
   /*! orgstyle-custom.css | MIT License | Haran Mia */
   /* -- */
+
+  body #preamble {
+      border-bottom: 4px solid #8b8b8b;
+  }
+  body #postamble {
+      border-bottom: 2px solid #8b8b8b;
+  }
+
+
   .mainsail {
       margin:.8em auto;
       color:#A53539/*#000*/
@@ -6798,6 +6807,148 @@ textarea {
       margin: 0 1ex;
       color:#FF8C00;
   }
+
+  body .abstract {
+      margin: auto;
+      width: 90%;
+      font-style: italic;
+      border-bottom: 3px double #8b8b8b;
+  }
+
   /* -- */
 #+END_SRC
 # orgstyle-custom.css ends here
+******* style-article-index.css
+:PROPERTIES:
+:header-args: :tangle STOCK/CHUNK/THEMES/PROXY/ASSETS/CSS/style-article-index.css
+:END:
+
+#+BEGIN_SRC css
+  /*! style-article-index.css | MIT License | Haran Mia */
+  /* -- */
+  /* Todo */
+  body h2 {
+      padding-bottom: .75ex;
+      /*border-bottom: .15ex solid black;*/
+      /*border-top: .15ex solid black;*/
+  }
+
+  /* always auto updated... */
+  body footer {
+      display:none;
+  }
+
+  /*
+  body .outline-2 .outline-text-2 .article-summary hr {
+      border-top: 1px solid #8b8b8b;
+  }
+  ,*/
+  /*
+  body .status .compass {
+      border-bottom: 3px double #8b8b8b;
+  }
+
+  body h1.mainsail {
+      border-bottom: 3px double #8b8b8b;
+  }
+  ,*/
+
+  /* blog articles */
+
+  /*
+  body .article-summary {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size: .9rem;
+      font-style: italic;
+  }
+
+  body .article-summary p {
+      margin:0;
+  }
+
+  body .article-summary .tags {
+      display: flex;
+      flex-direction: column;
+      text-align:left;
+  }
+  ,*/
+
+  body .outline-2 {
+      /*
+      margin-top:10px;
+      margin-left:auto;
+      margin-right:auto;
+      width:65%;
+      height:90%;
+      ,*/
+      border-bottom: 1px solid #8b8b8b;
+  }
+
+  body .article-summary {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      /*font-size: .9rem;
+      font-style: italic;*/
+      position:relative;
+      left:0;
+      right:0;
+      top:0;
+      bottom:0;
+      margin-top:-30px;
+      margin-left:auto;
+      margin-right:auto;
+      /*border-bottom: 1px solid #8b8b8b;*/
+  }
+  body .article-summary hr {
+      display: none; /* not used, instead opt a horizontal line with CSS in .article-summary above */
+      /*border-top: 1px solid #8b8b8b;*/
+  }
+
+
+  body .article-summary p {
+      margin:0;
+  }
+
+
+  body .article-summary .tags {
+      display: flex;
+      flex-direction: row;
+      text-align:left;
+      margin-top:5px;
+  }
+
+  body .abstract {
+      margin: auto;
+      width: 100%;
+      font-style: normal; /*italic;*/
+      border-bottom: none; /*3px double #8b8b8b;*/
+      margin-top:10px;
+
+  }
+
+  /*--*/
+  /*
+  body .outline-2 .outline-text-2 .article-head {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size: .12rem;
+      font-style: italic;
+  }
+
+  body .outline-2 .outline-text-2 .article-head p {
+      margin:0;
+  }
+
+  .abstract {
+      margin:auto;
+      width:95%;
+      font-style:normal
+  }
+  ,*/
+  /* -- */
+#+END_SRC
+# style-article-index.css ends here
