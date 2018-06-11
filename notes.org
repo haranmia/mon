@@ -901,9 +901,6 @@ Put all configurations in the hash-table 'mon-configdb'
       [[file:%s][%s]]
       ,#+begin_article-summary
       <span class=\"date\"> %s </span> by <span class=\"author\"> [[%s][%s]] </span>
-      #+begin_tags
-      %s
-      #+end_tags
       ,#+INCLUDE: \"%s::abstract\"
       [[file:%s][Read more]]
       <hr />
@@ -915,7 +912,6 @@ Put all configurations in the hash-table 'mon-configdb'
                (plist-get (nth 1 (car (org-publish-find-property entry :author project)))
                           :raw-link)
                (nth 2 (car (org-publish-find-property entry :author project)))
-               (org-publish-find-property entry :keywords project 'html)
                entry
                entry))))
  #+END_SRC
@@ -963,7 +959,7 @@ Put all configurations in the hash-table 'mon-configdb'
                         ;;
                         (block-data6 (replace-regexp-in-string
                                     "</p></div>[ \t\n]*<p>[ \t\n]*\\(.*\\)[ \t\n]*\\(<hr />\\)[ \t\n]*</p>"
-				  "\\1\\2\n</p>\n</div>" block-data5))
+                                  "\\1\\2\n</p>\n</div>" block-data5))
                         ;;(regexp-pat2 "</div>\\([ \t\n]*\\)<p>")
                         ;;(replace-pat2"</div>\\1<p style=\"display:inline\">")
                         ;;(block-data6 (replace-regexp-in-string regexp-pat2 replace-pat2 block-data5))
