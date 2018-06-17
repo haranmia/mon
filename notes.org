@@ -6760,6 +6760,7 @@ textarea {
   /* -- */
 
   body #preamble {
+      position: relative;
       border-bottom: 4px solid #8b8b8b;
   }
   body #postamble {
@@ -6773,15 +6774,21 @@ textarea {
   }
 
   .headsail,.mainsail {
-      text-align:center
+      color:black;
+      text-align:left;
+      font-family: "Open Sans", "Deja Vu Sans", Georgia, sans;
+      font-size:250%;
+      /*text-align:center;*/
+
   }
 
   .headsail {
-      font-size:1.1em;
       line-height:1.4;
       font-weight:700;
       margin:1em auto;
-      color:#B9543C
+      color:#B9543C;
+      /*font-size:1.1em;*/
+
   }
 
 
@@ -6799,8 +6806,19 @@ textarea {
   }
 
   compass {
+      position:absolute;
+      /*width:50%;
+        height:100%;*/
+
+      /*background: red;
+        display: block; *//* fix for opera and ff */
+
+      text-align:right;
       margin-top: 1em;
-      font-size: 1rem;
+      right:0;
+      top:0;
+      margin-top:0;
+    font-size: 1rem;
   }
 
   compass > a {
