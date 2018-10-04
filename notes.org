@@ -706,7 +706,7 @@ Put all configurations in the hash-table 'mon-configdb'
 **** Publishing-dir
 #+BEGIN_SRC emacs-lisp
   (setf (gethash 'mon-www-dir mon-configdb)
-        (file-name-as-directory "w3")) ;; default
+        (file-name-as-directory "haranmia.github.io")) ;; default
   (defun mon-www-dir (&optional init-www-dir use-as-origin)
       ;; set
       (and init-www-dir
