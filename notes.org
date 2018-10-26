@@ -919,26 +919,32 @@ Put all configurations in the hash-table 'mon-configdb'
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
   (defun mon-format-entry-article (entry style project)
-    (when (not (directory-name-p entry))
+      (when (not (directory-name-p entry))
 
-      (concat
-       (format "
-      [[file:%s][%s]]
-      ,#+begin_article-summary
-      <span class=\"date\"> %s </span> by <span class=\"author\"> [[%s][%s]] </span>
-      ,#+INCLUDE: \"%s::abstract\"
-      [[file:%s][Read more]]
-      <hr />
-      ,#+end_article-summary
-      "
-               entry
-               (org-publish-find-title entry project)
-               (format-time-string "%B %e, %Y" (org-publish-find-date entry project))
-               (plist-get (nth 1 (car (org-publish-find-property entry :author project)))
-                          :raw-link)
-               (nth 2 (car (org-publish-find-property entry :author project)))
-               entry
-               entry))))
+        (let* ((author-property (car (org-publish-find-property entry :author project)))
+               (author-and-link
+                (cond ((null author-property) "Anonymous")
+                      ((atom author-property) author-property)
+                      (t (format "[[%s][%s]]"
+                                 (plist-get (nth 1 author-property) :raw-link)
+                                 (nth 2 author-property))))))
+
+          (concat
+           (format "
+        [[file:%s][%s]]
+        ,#+begin_article-summary
+        <span class=\"date\"> %s </span> by <span class=\"author\"> %s </span>
+        ,#+INCLUDE: \"%s::abstract\"
+        [[file:%s][Read more]]
+        <hr />
+        ,#+end_article-summary
+        "
+                   entry
+                   (org-publish-find-title entry project)
+                   (format-time-string "%B %e, %Y" (org-publish-find-date entry project))
+                   author-and-link
+                   entry
+                   entry)))))
  #+END_SRC
 
 *** Backend
